@@ -4,3 +4,30 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>Roles.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>1</th>
+            <th>1</th>
+            <th>1</th>
+            <th>1</th>
+            <th>1</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var client in Model)
+        {
+            <tr>
+                <td>@client.id</td>
+                <td>@client.username</td>
+                <td>@client.email</td>
+                <td>@client.phonenumber</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" href="/Client/Edit?id=@client.id">Edit</a>
+                    <a class="btn btn-danger btn-sm" href="/Client/Delete?id=@client.id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

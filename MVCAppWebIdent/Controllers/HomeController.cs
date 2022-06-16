@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVCAppWebIdent.Models;
 using System.Diagnostics;
@@ -8,10 +9,12 @@ namespace MVCAppWebIdent.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
+            _roleManager = roleManager;
         }
 
         public IActionResult Index()
@@ -32,12 +35,6 @@ namespace MVCAppWebIdent.Controllers
 
         [Authorize]
         public IActionResult Strategies()
-        {
-            return View();
-        }
-
-        [Authorize(Policy = "Administrator")]
-        public IActionResult Roles()
         {
             return View();
         }
