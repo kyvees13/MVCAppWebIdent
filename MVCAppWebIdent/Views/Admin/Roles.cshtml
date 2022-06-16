@@ -1,33 +1,59 @@
 ﻿@{
     ViewData["Title"] = "Roles";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Roles.</p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>1</th>
-            <th>1</th>
-            <th>1</th>
-            <th>1</th>
-            <th>1</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var client in Model)
-        {
-            <tr>
-                <td>@client.id</td>
-                <td>@client.username</td>
-                <td>@client.email</td>
-                <td>@client.phonenumber</td>
-                <td>
-                    <a class="btn btn-primary btn-sm" href="/Client/Edit?id=@client.id">Edit</a>
-                    <a class="btn btn-danger btn-sm" href="/Client/Delete?id=@client.id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+<html>
+    <h1>@ViewData["Title"]</h1>
+    <button id="btnclickShow" class="btn btn-primary btn-sm" />
+    <button id="btnclickHide" class="btn btn-danger btn-sm" />
+    <div id="tabl">
+        <table class="table" id="clientsTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="Edit">Edit</a>
+                            <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="Delete">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn alert-primary btn-sm"></button>
+        <button></button>
+    </div>
+
+</html>
+
+@section Scripts{
+
+    <script>
+
+        $(document).ready(function(){
+            $("btnclickShow").click(function(){
+                $("#tabl").modal('show');
+            });
+            $("btnclickHide").click(function(){
+                $("#tabl").modal('hide');
+            });
+        })
+
+    </script>
+}
