@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@{
+
+}
+
+<table class="table" id="clientsTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+        </tr>
+    </thead>
+            <tbody>
+                @foreach(var user in Model)
+                {
+                    <tr>
+                        <td>@user.Id</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>
+                            <button data-internalid="@user.Id" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#EditModal">Edit</button>
+                            <button data-internalid="@user.Id" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteModal">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+</table>
+
+@section Scripts {
+
+}

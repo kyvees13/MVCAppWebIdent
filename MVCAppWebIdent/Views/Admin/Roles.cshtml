@@ -1,44 +1,40 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.Rendering;
+@using Microsoft.AspNetCore.Mvc.Infrastructure;
+@using MVCAppWebIdent.Models;
+
+@{
     ViewData["Title"] = "Roles";
 }
 
-
-
 <html>
-    <h1>@ViewData["Title"]</h1>
-    <button id="btnclickShow" class="btn btn-primary btn-sm" />
-    <button id="btnclickHide" class="btn btn-danger btn-sm" />
-    <div id="tabl">
-        <table class="table" id="clientsTable">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Phone Number</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var user in Model)
-                {
-                    <tr>
-                        <td>@user.Id</td>
-                        <td>@user.UserName</td>
-                        <td>@user.Email</td>
-                        <td>@user.PhoneNumber</td>
-                        <td>
-                            <a class="btn btn-primary btn-sm" asp-controller="Admin" asp-action="Edit">Edit</a>
-                            <a class="btn btn-danger btn-sm" asp-controller="Admin" asp-action="Delete">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="modal-footer">
-        <button class="btn alert-primary btn-sm"></button>
-        <button></button>
-    </div>
+
+    <head>
+        <link rel="stylesheet" href="~/css/_RoleStyle.css" />
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    </head>
+
+    <body>
+
+        <!-- Finder Block -->
+        <div>
+            <select id="selector" asp-items=@ViewBag.select></select>
+            <br /><button id="btnSearch" type="submit" class="btn-light">Submit</button>
+        </div>
+
+        <div id="table"></div>
+
+        <!-- Edit Modal -->
+        <div id="PopUpEditModal">
+            <partial name="_PopUpEditRoleModelPartial", model="Model" />
+        </div>
+
+        <!-- Delete Modal -->
+        <div id="PopUpDeleteModal">
+            <partial name="_PopUpDeleteRoleModelPartial", model="Model" />
+        </div>
+
+    </body>
 
 </html>
 
@@ -46,14 +42,111 @@
 
     <script>
 
-        $(document).ready(function(){
-            $("btnclickShow").click(function(){
-                $("#tabl").modal('show');
+        $(document).ready(function () 
+        {
+            $("#btnSearch").click(function () {
+                $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
             });
-            $("btnclickHide").click(function(){
-                $("#tabl").modal('hide');
+        });
+
+    </script> 
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#EditModal').on('show.bs.modal', function (event) 
+            {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var recipient = button.data('internalid'); // Extract info from data-* attributes
+                //console.log(recipient);  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                modal.find('.modal-title').text('Edit ' + recipient);
+
+                $.ajax(
+                    {
+                        type: 'GET',
+                        url: "@Url.Action("GetAccountByID", controller: "Admin")",
+                        data: { id: recipient },
+                        dataType: 'json',
+                        error: function () { console.log("not success"); },
+                        success: function (result) 
+                        {
+
+                            console.log("success: ", result);
+
+                            modal.find('#currentEmail').val(result["email"]);
+                            modal.find('#currentPassword').val(result["password"]);
+
+                            var saveModel = { Id: recipient, Email: result["email"], result["password"] };
+
+                            $("#btnSaveProperties").click(function() 
+                            {
+
+                                var model = { Id: recipient, Email: result["email"], Password: result["password"] };
+
+                                $.ajax(
+                                {
+                                    type: "POST",
+                                    url: "@Url.Action("SaveProperties", controller: "Admin")",
+                                    data: JSON.stringify(model),
+                                    dataType: 'json',
+                                    error: function () { console.log("not success"); },
+                                    success: function (result) 
+                                    {
+                                        $(".modal").on("hidden.bs.modal", function()
+                                        {
+                                            $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
+                                        });
+                                    }
+                                });
+                            }
+
+                        }
+                    });
+
             });
         })
 
     </script>
+
+    <script>
+
+        $(document).ready(function () 
+        {
+            $('#DeleteModal').on('show.bs.modal', function (event) 
+            {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var recipient = button.data('internalid'); // Extract info from data-* attributes
+                //console.log(recipient);  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+                modal.find('.modal-title').text('Delete');
+
+                $("#ConfirmDeleteDialog").click(function() {
+
+                    $.ajax(
+                    {
+                        type: "POST",
+                        url: "@Url.Action("DeleteAccountByID", controller: "Admin")",
+                        data: { id: recipient },
+                        dataType: 'json',
+                        error: function () { console.log("not success"); },
+                        success: function (result) 
+                        {
+                            $(".modal").on("hidden.bs.modal", function()
+                            {
+                                $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
+                            });
+                        }
+                    });
+
+                });
+            });
+
+        });
+
+    </script>   
+
 }
