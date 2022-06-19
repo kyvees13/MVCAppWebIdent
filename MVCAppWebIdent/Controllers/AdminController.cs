@@ -19,16 +19,31 @@ namespace MVCAppWebIdent.Controllers
         }
 
         [Authorize(Policy = "Admin")]
+        public IActionResult Index() => View();
+
+        [Authorize(Policy = "Admin")]
+        public IActionResult GetPopUpEditModalPartialView() => PartialView("_PopupEditRoleModelPartial");
+
+        [Authorize(Policy = "Admin")]
+        public IActionResult GetPopUpDeleteModalPartialView() => PartialView("_PopupDeleteRoleModelPartial");
+
+        [Authorize(Policy = "Admin")]
         [HttpGet]
         public JsonResult GetAccountByID(string id)
         {
-            var user = _userManager.FindByIdAsync(id.ToString()).Result;
-            return Json(new EditModel { Email = user.Email, Password = user.PasswordHash });
+            var currentUser = _userManager.FindByIdAsync(id.ToString()).Result;
+
+            if (currentUser == null)
+            {
+                return Json(new { Success = "False", Message = "User not found" });
+            }
+
+            return Json(new EditModel { Id = id, Email = currentUser.Email, Password = currentUser.PasswordHash });
         }
 
         [Authorize(Policy = "Admin")]
         [HttpPost]
-        public JsonResult SaveProperties(EditModel _EditModel)
+        public JsonResult SaveProperties([FromBody] EditModel _EditModel)
         {
 
             var currentUser = _userManager.FindByIdAsync(_EditModel.Id).Result;
@@ -39,10 +54,16 @@ namespace MVCAppWebIdent.Controllers
             }
 
             currentUser.Email = _EditModel.Email;
+            currentUser.PhoneNumber = "+79821478530";
 
-            var _json_serialize = JsonSerializer.Serialize(_EditModel.GetType().GetProperties().ToList());
+            var result = _userManager.UpdateAsync(currentUser);
 
-            return Json(new { Success = "True", Message = "Success changed data", Changed = _json_serialize });
+            if (result.Result.Succeeded)
+            {
+                return Json(new { Success = "True", Message = "Success changed data" });
+            }
+
+            return Json(new { Success = "False", Message = "Changing not succeeded" });
         }
 
         [Authorize(Policy = "Admin")]
@@ -94,12 +115,6 @@ namespace MVCAppWebIdent.Controllers
         }
 
         [Authorize(Policy = "Admin")]
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        [Authorize(Policy = "Admin")]
         [HttpGet]
         public IActionResult Roles()
         {
@@ -132,17 +147,7 @@ namespace MVCAppWebIdent.Controllers
             return PartialView(new List<IdentityUser>());
         }
 
-        [Authorize(Policy = "Admin")]
-        public IActionResult GetPopUpEditModalPartialView()
-        {
-            return PartialView("_PopupEditRoleModelPartial");
-        }
-
-        [Authorize(Policy = "Admin")]
-        public IActionResult GetPopUpDeleteModalPartialView()
-        {
-            return PartialView("_PopupDeleteRoleModelPartial");
-        }
+        
 
         [Authorize(Policy = "Admin")]
         [HttpGet]

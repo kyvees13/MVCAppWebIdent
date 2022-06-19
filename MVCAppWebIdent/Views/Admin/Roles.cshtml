@@ -60,7 +60,7 @@
                 var button = $(event.relatedTarget); // Button that triggered the modal
                 var recipient = button.data('internalid'); // Extract info from data-* attributes
                 //console.log(recipient);  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
                 var modal = $(this);
                 modal.find('.modal-title').text('Edit ' + recipient);
 
@@ -74,17 +74,20 @@
                         success: function (result) 
                         {
 
-                            console.log("success: ", result);
+                            console.log("success got account! : ", result);
 
                             modal.find('#currentEmail').val(result["email"]);
                             modal.find('#currentPassword').val(result["password"]);
 
-                            var saveModel = { Id: recipient, Email: result["email"], result["password"] };
-
-                            $("#btnSaveProperties").click(function() 
+                            $("#btnSaveProperties").one('click', function() 
                             {
+                                console.log("button was clicked!")
 
-                                var model = { Id: recipient, Email: result["email"], Password: result["password"] };
+                                var model = { 
+                                    Id: recipient, 
+                                    Email: $("#currentEmail").val(), 
+                                    Password: $("#currentPassword").val() 
+                                };
 
                                 $.ajax(
                                 {
@@ -92,16 +95,15 @@
                                     url: "@Url.Action("SaveProperties", controller: "Admin")",
                                     data: JSON.stringify(model),
                                     dataType: 'json',
+                                    contentType: "application/json",
                                     error: function () { console.log("not success"); },
                                     success: function (result) 
                                     {
-                                        $(".modal").on("hidden.bs.modal", function()
-                                        {
-                                            $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
-                                        });
+                                        console.log("success request! : ", result);
+                                        $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
                                     }
                                 });
-                            }
+                            })
 
                         }
                     });
