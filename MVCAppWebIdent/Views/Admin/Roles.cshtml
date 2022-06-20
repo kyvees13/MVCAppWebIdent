@@ -7,36 +7,36 @@
     ViewData["Title"] = "Roles";
 }
 
-<html>
-
-    <head>
-        <link rel="stylesheet" href="~/css/_RoleStyle.css" />
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    </head>
-
-    <body>
 
         <!-- Finder Block -->
-        <div>
-            <select id="selector" asp-items=@ViewBag.select></select>
-            <br /><button id="btnSearch" type="submit" class="btn-light">Submit</button>
-        </div>
+<div>
+    <select id="selector" asp-items=@ViewBag.select></select>
+    <br /><button id="btnSearch" type="submit" class="btn-light">Submit</button>
+</div>
 
-        <div id="table"></div>
+<div id="table"></div>
 
-        <!-- Edit Modal -->
-        <div id="PopUpEditModal">
-            <partial name="_PopUpEditRoleModelPartial", model="Model" />
-        </div>
+<!-- Edit Modal -->
+<div id="PopUpEditModal">
+    
+    <partial name="_PopUpEditRoleModelPartial", model="Model" />
+    
+</div>
 
-        <!-- Delete Modal -->
-        <div id="PopUpDeleteModal">
-            <partial name="_PopUpDeleteRoleModelPartial", model="Model" />
-        </div>
+<div id="PopUpDetailsModal">
 
-    </body>
+    <partial name="_PopupDetailsRoleModelPartial", model="Model" />
 
-</html>
+</div>
+
+<!-- Delete Modal -->
+
+<div id="PopUpDeleteModal">
+    
+    <partial name="_PopUpDeleteRoleModelPartial", model="Model" />
+    
+</div>
+
 
 @section Scripts{
 
@@ -44,7 +44,8 @@
 
         $(document).ready(function () 
         {
-            $("#btnSearch").click(function () {
+            $("#btnSearch").click(function () 
+            {
                 $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
             });
         });
@@ -149,6 +150,51 @@
 
         });
 
-    </script>   
+    </script>
+    
+    <script>
+
+        $(document).ready(function () 
+        {
+            $('#DetailsModal').on('show.bs.modal', function (event) 
+            {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+                var recipient = button.data('internalid'); // Extract info from data-* attributes
+                //console.log(recipient);  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var modal = $(this);
+
+                modal.find('.modal-title').text('Details : ' + recipient);
+
+                $.ajax(
+                    {
+                        type: 'GET',
+                        url: "@Url.Action("GetAccountByID", controller: "Admin")",
+                        data: { id: recipient },
+                        dataType: 'json',
+                        error: function () { console.log("not success"); },
+                        success: function (result) 
+                        {
+
+                            console.log("success got account! : ", result);
+
+                            modal.find('label#IdContent').text(result["id"]);
+                            modal.find('label#EmailContent').text(result["email"]);
+                            modal.find('label#PhonenumberContent').text(result["phonenumber"]);
+                            modal.find('label#PasswordContent').text(result["password"]);
+
+                            console.log("loaded labels!");
+
+                            
+
+                        }
+                    });
+
+                
+            });
+
+        });
+
+    </script> 
 
 }

@@ -1,5 +1,5 @@
 html {
-  font-size: 14px;
+    font-size: 25px;
 }
 
 @media (min-width: 768px) {
@@ -14,5 +14,14 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 25px;
+    color: black;
+    height: 100vh;
+    background: linear-gradient(#FFFFFF, #4A11AE);
+    border: 5px solid darkblue;
+}
+
+.navbar-custom {
+    background: linear-gradient(#FFFFFF, #4A11AE);
 }

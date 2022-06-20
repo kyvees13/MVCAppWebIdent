@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@{
+
+}
+
+<!-- Modal -->
+        <div class="modal fade bd-example-modal-lg" id="DetailsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+
+                <label id="IdLabel">ID: </label><label id="IdContent"></label><br>
+
+                <label id="EmailLabel">Email: </label><label id="EmailContent"></label><br>
+
+                <label id="PhonenumberLabel">Phone number: </label><label id="PhonenumberContent"></label><br>
+
+                <label id="PasswordLabel">Password: </label><label id="PasswordContent"></label><br>
+
+              </div>
+              <div class="modal-footer">
+                <button id="btnDetailsClose" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+@section Scripts{
+
+}

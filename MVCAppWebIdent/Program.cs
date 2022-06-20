@@ -2,9 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MVCAppWebIdent.Data;
 using System.Security.Claims;
-using MVCAppWebIdent.Areas.Identity;
-
-var builder = WebApplication.CreateBuilder(args);
+using MVCAppWebIdent.Areas.Identity;var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 

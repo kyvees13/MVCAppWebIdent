@@ -38,7 +38,7 @@ namespace MVCAppWebIdent.Controllers
                 return Json(new { Success = "False", Message = "User not found" });
             }
 
-            return Json(new EditModel { Id = id, Email = currentUser.Email, Password = currentUser.PasswordHash });
+            return Json(new EditModel { Id = id, Email = currentUser.Email, Password = currentUser.PasswordHash, Phonenumber=currentUser.PhoneNumber });
         }
 
         [Authorize(Policy = "Admin")]
@@ -146,8 +146,7 @@ namespace MVCAppWebIdent.Controllers
 
             return PartialView(new List<IdentityUser>());
         }
-
-        
+   
 
         [Authorize(Policy = "Admin")]
         [HttpGet]

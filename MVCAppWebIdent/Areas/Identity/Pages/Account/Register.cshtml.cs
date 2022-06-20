@@ -126,6 +126,7 @@ namespace MVCAppWebIdent.Areas.Identity.Pages.Account
                 {
                     var rolename1 = "Admin";
                     var rolename2 = "Manager";
+                    var rolename3 = "User";
 
                     if (!await _roleManager.RoleExistsAsync(rolename1))
                     {
@@ -138,6 +139,13 @@ namespace MVCAppWebIdent.Areas.Identity.Pages.Account
                         await _roleManager.CreateAsync(new IdentityRole(rolename2));
                     }
                     await _userManager.AddToRoleAsync(user, rolename2);
+
+                    if (!await _roleManager.RoleExistsAsync(rolename3))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole(rolename3));
+                    }
+                    await _userManager.AddToRoleAsync(user, rolename3);
+
 
                     _logger.LogInformation("User created a new account with password.");
 
