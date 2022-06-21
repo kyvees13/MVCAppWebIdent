@@ -1,55 +1,111 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MVCAppWebIdent</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/MVCAppWebIdent.styles.css" asp-append-version="true" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-</head>
-
-<style>
-
-    #analytics-platform-chart-demo{
-
-        height: 100vh;
-        border: 5px solid darkblue;
-
-    }
-
-</style>
-
+<!-- Created by CodingLab |www.youtube.com/CodingLabYT-->
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <!--<title> Drop Down Sidebar Menu | CodingLab </title>-->
+    <link rel="stylesheet" href="style.css">
+    <link href="~/css/site.css" rel="stylesheet" />
+    <!-- Boxiocns CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3 navbar-custom">
-            <div class="container-fluid">
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <partial name="_UsersPanelPartial" />
-                        <partial name="_AdminPanelPartial" />
-                    </ul>
-                    <partial name="_LoginPartial" />
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="content">
+
+  <div class="wrapper">
+      
+      <div class="sidebar close">
+          
+          <div class="logo-details">
+              <i class='bx bxl-c-plus-plus'></i>
+              <span class="logo_name">TechApp</span>
+          </div>
+          
+          <ul class="nav-links">
+              
+              <li>
+                  <a href="#">
+                      <i class='bx bx-grid-alt' ></i>
+                      <span class="link_name">Dashboard</span>
+                  </a>
+                  <ul class="sub-menu blank">
+                      <li><a class="link_name" href="#">Dashboard</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a href="#">
+                      <i class='bx bx-pie-chart-alt-2' ></i>
+                      <span class="link_name">Analytics</span>
+                  </a>
+                  <ul class="sub-menu blank">
+                      <li><a class="link_name" href="#">Analytics</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a href="#">
+                      <i class='bx bx-line-chart' ></i>
+                      <span class="link_name">Chart</span>
+                  </a>
+                  <ul class="sub-menu blank">
+                      <li><a class="link_name" href="#">Chart</a></li>
+                  </ul>
+              </li>
+              <li>
+                  <a asp-controller="Home" asp-action="Settings">
+                      <i class='bx bx-cog' ></i>
+                      <span class="link_name">Settings</span>
+                  </a>
+                  <ul class="sub-menu blank">
+                      <li><a class="link_name" asp-controller="Home" asp-action="Settings">Settings</a></li>
+                  </ul>
+                  </li>
+                  <li>
+                      <div class="profile-details">
+                          <div class="profile-content">
+                                <!--<img src="image/profile.jpg" alt="profileImg">-->
+                          </div>
+                          
+                          <div class="name-job">
+                              <div class="profile_name">User.Username</div>
+                              <div class="job">User</div>
+                          </div>
+                          <i class='bx bx-log-out' ></i>
+
+                      </div>
+                  </li>
+          </ul>
+
+          <section class="home-section">
+              <div class="home-content">
+                  <i class='bx bx-menu' ></i>
+                  <span class="text">Drop Down Sidebar</span>
+              </div>
+          </section>
+
+       </div>
+        <div class="container">
             @RenderBody()
-        </main>
-    </div>
+        </div>
+  </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+  <script>
+      let arrow = document.querySelectorAll(".arrow");
+          for (var i = 0; i < arrow.length; i++) {
+            arrow[i].addEventListener("click", (e)=>{
+           let arrowParent = e.target.parentElement.parentElement;//selecting main parent of arrow
+           arrowParent.classList.toggle("showMenu");
+            });
+          }
+          let sidebar = document.querySelector(".sidebar");
+          let sidebarBtn = document.querySelector(".bx-menu");
+          console.log(sidebarBtn);
+          sidebarBtn.addEventListener("click", ()=>{
+            sidebar.classList.toggle("close");
+          });
+  </script>
+
+  @await RenderSectionAsync("Scripts", required: false)
+
 </body>
-
 </html>

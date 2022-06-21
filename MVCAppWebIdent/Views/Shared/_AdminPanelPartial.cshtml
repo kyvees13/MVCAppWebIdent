@@ -5,10 +5,10 @@
 
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Roles">Roles</a>
+    <li class="nav-link">
+        <a asp-controller="Admin" asp-action="Index">
+            <i class='bx bx-bug icon'></i>
+            <span class="text nav-text">Admin Panel</span>
+        </a>
     </li>
 }

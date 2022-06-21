@@ -4,38 +4,47 @@
 @using MVCAppWebIdent.Models;
 
 @{
-    ViewData["Title"] = "Roles";
+    ViewData["Title"] = "Clients";
 }
 
+<div class="contain">
 
-        <!-- Finder Block -->
-<div>
-    <select id="selector" asp-items=@ViewBag.select></select>
-    <br /><button id="btnSearch" type="submit" class="btn-light">Submit</button>
-</div>
+    <h1 class="headertext">Clients</h1>
+    <p>Here you can manage roles and edit account information!</p>
+    <br />
 
-<div id="table"></div>
+    <!-- Finder Block -->
+    <div class="finder" style="display: inline-block">
+        <select id="selector" asp-items=@ViewBag.select></select>
+        <br /><button id="btnSearch" type="submit" class="btn-light">Submit</button>
+    </div>
+    <br />
 
-<!-- Edit Modal -->
-<div id="PopUpEditModal">
+    <div id="table"></div>
+
+    <!-- Edit Modal -->
+    <div id="PopUpEditModal">
     
-    <partial name="_PopUpEditRoleModelPartial", model="Model" />
+        <partial name="_PopUpEditRoleModelPartial", model="Model" />
     
-</div>
+    </div>
 
-<div id="PopUpDetailsModal">
+    <div id="PopUpDetailsModal">
 
-    <partial name="_PopupDetailsRoleModelPartial", model="Model" />
+        <partial name="_PopupDetailsRoleModelPartial", model="Model" />
 
-</div>
+    </div>
 
-<!-- Delete Modal -->
+    <!-- Delete Modal -->
 
-<div id="PopUpDeleteModal">
+    <div id="PopUpDeleteModal">
     
-    <partial name="_PopUpDeleteRoleModelPartial", model="Model" />
+        <partial name="_PopUpDeleteRoleModelPartial", model="Model" />
     
-</div>
+    </div> 
+
+</div> 
+
 
 
 @section Scripts{
@@ -47,6 +56,7 @@
             $("#btnSearch").click(function () 
             {
                 $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
+                $('#clientsTable').DataTable(); 
             });
         });
 
@@ -58,11 +68,10 @@
 
             $('#EditModal').on('show.bs.modal', function (event) 
             {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var recipient = button.data('internalid'); // Extract info from data-* attributes
-                //console.log(recipient);  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+                var button = $(event.relatedTarget);
+                var recipient = button.data('internalid'); 
                 var modal = $(this);
+                
                 modal.find('.modal-title').text('Edit ' + recipient);
 
                 $.ajax(
@@ -189,8 +198,6 @@
 
                         }
                     });
-
-                
             });
 
         });

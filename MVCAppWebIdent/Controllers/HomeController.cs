@@ -6,41 +6,25 @@ using System.Diagnostics;
 
 namespace MVCAppWebIdent.Controllers
 {
-    public class HomeController : Controller
+    public class CabinetController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public HomeController(ILogger<HomeController> logger, RoleManager<IdentityRole> roleManager)
+        public CabinetController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
+            _userManager = userManager;
             _roleManager = roleManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Userj()
         {
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public IActionResult Strategies()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public IActionResult Settings()
+        public IActionResult Adminj()
         {
             return View();
         }

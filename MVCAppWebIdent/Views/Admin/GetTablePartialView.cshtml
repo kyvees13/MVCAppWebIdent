@@ -4,13 +4,16 @@
 
 }
 
-<table class="table" id="clientsTable">
+<table id="clientsTable" class="display">
     <thead>
         <tr>
             <th>ID</th>
             <th>Username</th>
             <th>Email</th>
             <th>Phone Number</th>
+            <th>Edit</th>
+            <th>Details</th>
+            <th>Delete</th>
         </tr>
     </thead>
             <tbody>
@@ -21,17 +24,19 @@
                         <td>@user.UserName</td>
                         <td>@user.Email</td>
                         <td>@user.PhoneNumber</td>
-                        <td>
-                            <button data-internalid="@user.Id" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#EditModal">Edit</button>
-                            <button data-internalid="@user.Id" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#DetailsModal">Details</button>
-                            <button data-internalid="@user.Id" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteModal">Delete</button>
-                        </td>
+                        <td><button data-internalid="@user.Id" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#EditModal">Edit</button></td>
+                        <td><button data-internalid="@user.Id" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#DetailsModal">Details</button></td>
+                        <td><button data-internalid="@user.Id" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteModal">Delete</button></td>
                     </tr>
                 }
             </tbody>
 
 </table>
 
-@section Scripts {
-
-}
+<script>
+    $(document).ready(function()
+    {
+        $('#clientsTable').DataTable();
+        console.log("datatable success");
+    });
+</script>

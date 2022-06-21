@@ -38,7 +38,13 @@ namespace MVCAppWebIdent.Controllers
                 return Json(new { Success = "False", Message = "User not found" });
             }
 
-            return Json(new EditModel { Id = id, Email = currentUser.Email, Password = currentUser.PasswordHash, Phonenumber=currentUser.PhoneNumber });
+            return Json(new EditModel 
+            { 
+                Id = id, 
+                Email = currentUser.Email, 
+                Password = currentUser.PasswordHash, 
+                Phonenumber=currentUser.PhoneNumber 
+            });
         }
 
         [Authorize(Policy = "Admin")]
@@ -54,7 +60,7 @@ namespace MVCAppWebIdent.Controllers
             }
 
             currentUser.Email = _EditModel.Email;
-            currentUser.PhoneNumber = "+79821478530";
+            currentUser.PhoneNumber = _EditModel.Phonenumber;
 
             var result = _userManager.UpdateAsync(currentUser);
 
@@ -73,49 +79,41 @@ namespace MVCAppWebIdent.Controllers
 
             var user = _userManager.FindByIdAsync(id).Result;
 
-            if (user != null)
+            if (user == null)
             {
-                var resp1 = _userManager.RemoveFromRolesAsync(
-                    user: user, roles: _userManager.GetRolesAsync(user).Result.Cast<string>());
+                return Json(new { Success = "False", Message = "User not found" });
+            }
 
-                var resp = _userManager.DeleteAsync(user);
+            var resp1 = _userManager.RemoveFromRolesAsync(
+                user: user, roles: _userManager.GetRolesAsync(user).Result.Cast<string>());
 
-                if (resp.Result.Succeeded)
-                {                    
-                    return Json(new 
-                    { 
-                        Success = "True", 
-                        Message = "Success deleted" 
-                    });
-                }
-                else if (resp.Result.Errors.Count() > 0)
+            var resp = _userManager.DeleteAsync(user);
+
+            if (resp.Result.Succeeded)
+            {
+                return Json(new
                 {
-                    return Json(new
-                    {
-                        Success = "False",
-                        Message = JsonSerializer.Serialize(resp.Result.Errors.ToList())
-                    });
-                }
-
+                    Success = "True",
+                    Message = "Success deleted"
+                });
+            }
+            else if (resp.Result.Errors.Count() > 0)
+            {
                 return Json(new
                 {
                     Success = "False",
-                    Message = "Unexpected"
+                    Message = JsonSerializer.Serialize(resp.Result.Errors.ToList())
                 });
-
-
             }
 
             return Json(new
             {
                 Success = "False",
-                Message = "User not found"
+                Message = "Unexpected"
             });
-
         }
 
         [Authorize(Policy = "Admin")]
-        [HttpGet]
         public IActionResult Roles()
         {
             List<SelectListItem> _select = new List<SelectListItem>();
@@ -134,6 +132,12 @@ namespace MVCAppWebIdent.Controllers
         }
 
         [Authorize(Policy = "Admin")]
+        public IActionResult Settings()
+        {
+            return View();
+        }
+
+        [Authorize(Policy = "Admin")]
         public IActionResult GetTablePartialView(string roleName)
         {
             bool isExistRole = _roleManager.RoleExistsAsync(roleName).Result;
@@ -145,24 +149,6 @@ namespace MVCAppWebIdent.Controllers
             }
 
             return PartialView(new List<IdentityUser>());
-        }
-   
-
-        [Authorize(Policy = "Admin")]
-        [HttpGet]
-        public JsonResult LoadRoles()
-        {
-            List<SelectListItem> _select = new List<SelectListItem>();
-
-            var roles = _roleManager.Roles;
-
-            if (roles != null)
-            {
-                foreach (IdentityRole role in roles) 
-                    _select.Add(new SelectListItem { Text = role.Name });
-            }
-
-            return Json(_select.ToList());
         }
     }
 }
