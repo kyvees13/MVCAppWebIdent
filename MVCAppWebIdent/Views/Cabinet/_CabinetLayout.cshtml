@@ -89,18 +89,29 @@
 
     <script>
 
+        function generate(controller, action) => "/" + controller + "/" + action + "/";
+
         $(document).ready(function () {
 
             $(".menu-links").load("/Cabinet/_UserNavigateBar");
             console.log('bar successful loaded!');
 
             $(".menu-links").on("click", ".nav-link", function() {
-                console.log("click!")
+                console.log("link clicked!")
 
                 var model = $(this);
 
                 $(".home").load(model.data("url"));
-            })
+            });
+
+            $(".menu-links").on("click", ".nav-changer", function() {
+                console.log("changer clicked!");
+
+                var model = $(this);
+
+                $(".menu-links").load(model.data("url"));
+                $(".home").load("/Admin/Index/");
+            });
 
             const body = document.querySelector('body'),
             sidebar = body.querySelector('nav'),
@@ -143,13 +154,5 @@
 </html>
 
 @section Scripts {
-
-    <script>
-
-        $(document).ready(function () {
-            $(".menu").load("/Admin/_AdminNavigateBar");
-        })
-
-    </script>
 
 }
