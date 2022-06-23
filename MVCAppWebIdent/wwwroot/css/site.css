@@ -64,6 +64,39 @@ body.dark {
     --text-color: #ccc;
 }
 
+.custombutton li {
+    height: 50px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.custombutton .text {
+    font-size: 17px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 1;
+}
+.custombutton li a {
+    list-style: none;
+    height: 100%;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: var(--tran-03);
+}
+.custombutton li a:hover {
+    background-color: var(--primary-color);
+}
+.custombutton li a:hover .text {
+    color: var(--sidebar-color);
+}
+
 /* ===== Sidebar ===== */
 .sidebar {
     position: fixed;
@@ -234,14 +267,13 @@ body.dark .sidebar header .toggle {
     border-radius: 6px;
 }
 
-    .sidebar li a:hover {
-        background-color: var(--primary-color);
-    }
-
-        .sidebar li a:hover .icon,
-        .sidebar li a:hover .text {
-            color: var(--sidebar-color);
-        }
+.sidebar li a:hover {
+    background-color: var(--primary-color);
+}
+.sidebar li a:hover .icon,
+.sidebar li a:hover .text {
+    color: var(--sidebar-color);
+}
 
 body.dark .sidebar li a:hover .icon,
 body.dark .sidebar li a:hover .text {

@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@{
+
+}
+
+<table id="roleTable" class="display">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Role</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+            <tbody>
+                @foreach(var role in Model)
+                {
+                    <tr>
+                        <td>@role.Id</td>
+                        <td>@role.Name</td>
+                        <td><button data-internalid="@role.Id" data-rolename="@role.Name" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#DeleteModal">Delete</button></td>
+                    </tr>
+                }
+            </tbody>
+
+</table>
+
+<script>
+
+    $(document).ready(function()
+    {
+        $('#roleTable').DataTable();
+        console.log("datatable success");
+    });
+
+</script>

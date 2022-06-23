@@ -89,8 +89,6 @@
 
     <script>
 
-        function generate(controller, action) => "/" + controller + "/" + action + "/";
-
         $(document).ready(function () {
 
             $(".menu-links").load("/Cabinet/_UserNavigateBar");
@@ -100,17 +98,19 @@
                 console.log("link clicked!")
 
                 var model = $(this);
+                var url = model.data("url");
 
                 $(".home").load(model.data("url"));
             });
 
             $(".menu-links").on("click", ".nav-changer", function() {
+
                 console.log("changer clicked!");
 
                 var model = $(this);
+                var url = model.data("url");
 
-                $(".menu-links").load(model.data("url"));
-                $(".home").load("/Admin/Index/");
+                $(".menu-links").load(url);
             });
 
             const body = document.querySelector('body'),

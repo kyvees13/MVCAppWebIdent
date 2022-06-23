@@ -7,199 +7,72 @@
     ViewData["Title"] = "Clients";
 }
 
+<style> 
+
+</style>
+
 <div class="contain">
 
-    <h1 class="headertext">Clients</h1>
-    <p>Here you can manage roles and edit account information!</p>
-    <br />
+    <h1 class="headertext">Roles</h1>
+    <p>Here you can manage roles!</p>
 
-    <!-- Finder Block -->
     <div class="finder" style="display: inline-block">
-        <select id="selector" asp-items=@ViewBag.select></select>
-        <button id="btnSearch" type="submit" class="btn-light">Submit</button>
+        <input id="inputAddRole"></input>
+        <button id="btnAddRole" class="btn btn-success" style="margin-left:10px; width:75px;">Add</button>
     </div>
 
-    <div>
-        <label>Введите новую роль: </label><input id="setRoleInput"  />
-        <button id="btnRoleSubmit"></button>
-    </div>
-
-    <br />
-    <br />
-
-    <div id="table"></div>
-
-    <!-- Edit Modal -->
-    <div id="PopUpEditModal">
-    
-        <partial name="_PopUpEditRoleModelPartial", model="Model" />
-    
-    </div>
-
-    <div id="PopUpDetailsModal">
-
-        <partial name="_PopupDetailsRoleModelPartial", model="Model" />
-
-    </div>
-
-    <!-- Delete Modal -->
+    <div id="RoleTable" style="margin-top: 50px"></div>
 
     <div id="PopUpDeleteModal">
-    
         <partial name="_PopUpDeleteRoleModelPartial", model="Model" />
-    
     </div>
 
 </div>
 
 <script>
 
-        $(document).ready(function () {
+    function LoadRoleTable(){$("#RoleTable").load("/Admin/GetRolesTablePartialView/");};
 
-            $("#btnRoleSubmit").click(function() {
+        $(document).ready(function () 
+        {
+            LoadRoleTable();
 
+            $(".contain").on("click", "#btnAddRole", function()
+            {
                 $.ajax(
                     {
                         type: "POST",
-                        url: "@Url.Action("SetNewRole", controller: "Admin")",
-                        data: { roleName: "#setRoleInput".val() },
+                        url: "@Url.Action("AddRole", "Admin")",
+                        data: { roleName: $("#inputAddRole").val() },
                         dataType: 'json',
                         error: function () { console.log("not success"); },
-                        success: function (result) { }
+                        success: function (result) { LoadRoleTable(); console.log("successful Added!", result); }
                     });
-
             });
 
-            $(document).on("click", "#btnSearch", function(event)
+            $(".contain").on("click", ".btn-danger", function() 
             {
-                console.log("search clicked!");
-                $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
-                $('#clientsTable').DataTable(); 
-                console.log("loaded!");
-            });
+                var model = $(this);
+                var data = model.data("internalid");
 
-
-            $(document).on("show.bs.modal", "#DeleteModal", function(event)
-            {
-
-                console.log("Delete clicked!");
-
-                var button = $(event.relatedTarget);
-
-                var recipient = button.data('internalid');
-                var modal = $(this);
-
-                modal.find('.modal-title').text('Delete');
-
-                $(document).one('click', "#ConfirmDeleteDialog", function()
+                console.log(data);
+                $(".contain").one("click", "#ConfirmDeleteDialog", function() 
                 {
                     $.ajax(
-                    {
-                        type: "POST",
-                        url: "@Url.Action("DeleteAccountByID", controller: "Admin")",
-                        data: { id: recipient },
-                        dataType: 'json',
-                        error: function () { console.log("not success"); },
-                        success: function (result) { $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() }); }
-                    });
-
+                        {
+                            type: "POST",
+                            url: "/Admin/DeleteRole/",
+                            data: { id: data },
+                            dataType: 'json',
+                            error: function() { console.log("delete not success") },
+                            success: function (result) { LoadRoleTable(); console.log("successful Delete!", result); }
+                        });
                 });
             });
-                
-            $(document).on("show.bs.modal", "#DetailsModal", function(event)
-            {
 
-                console.log("Details clicked!");
+        });
 
-                var button = $(event.relatedTarget);
-                var recipient = button.data('internalid');
-
-                var modal = $(this);
-
-                modal.find('.modal-title').text('Details : ' + recipient);
-
-                $.ajax(
-                    {
-                        type: 'GET',
-                        url: "@Url.Action("GetAccountByID", controller: "Admin")",
-                        data: { id: recipient },
-                        dataType: 'json',
-                        error: function () { console.log("not success"); },
-                        success: function (result) 
-                        {
-
-                            console.log("success got account! : ", result);
-
-                            modal.find('span#IdContent').text(result["id"]);
-                            modal.find('span#UsernameContent').text(result["username"]);
-                            modal.find('span#EmailContent').text(result["email"]);
-                            modal.find('span#EmailConfirmedContent').text(result["emailConfirmed"]);
-                            modal.find('span#PhonenumberContent').text(result["phonenumber"]);
-                            modal.find('span#PhonenumberConfirmedContent').text(result["phonenumberConfirmed"]);
-
-                            console.log("loaded labels!");
-                        }
-                    });
-            });
-
-            $(document).on("show.bs.modal", "#EditModal", function(event)
-            {
-                console.log("Edit clicked!");
-
-                var button = $(event.relatedTarget);
-                var recipient = button.data('internalid'); 
-                var modal = $(this);
-                
-                modal.find('.modal-title').text('Edit ' + recipient);
-
-                $.ajax(
-                    {
-                        type: 'GET',
-                        url: "@Url.Action("GetAccountByID", "Admin")",
-                        data: { id: recipient },
-                        dataType: 'json',
-                        error: function () { console.log("not success"); },
-                        success: function (result) 
-                        {
-                            console.log("success got account! : ", result);
-
-                            modal.find('#currentUsername').val(result["username"]);
-                            modal.find('#currentEmail').val(result["email"]);
-                            modal.find('#currentEmailConfirmed').val(result["emailconfirmed"]);
-                            modal.find('#currentPhonenumber').val(result["phonenumber"]);
-                            modal.find('#currentPhonenumberConfirmed').val(result["phonenumberconfirmed"]);
-
-                            $(document).one('click', "#btnSaveProperties", function()
-                            {
-                                console.log("button was clicked!")
-
-                                var model = { 
-                                    Id: recipient, 
-                                    Email: $("#currentEmail").val(), 
-                                    Phonenumber: $("#currePhonenumber").val(), 
-                                };
-
-                                $.ajax(
-                                {
-                                    type: "POST",
-                                    url: "@Url.Action("SaveProperties", controller: "Admin")",
-                                    data: JSON.stringify(model),
-                                    dataType: 'json',
-                                    contentType: "application/json",
-                                    error: function () { console.log("not success"); },
-                                    success: function (result) 
-                                    {
-                                        console.log("success request! : ", result);
-                                        $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
-                                    }
-                                });
-                            })
-                        }
-                    });
-            });
-        })
-
-    </script>
+</script>
 
 @section Scripts{
 
