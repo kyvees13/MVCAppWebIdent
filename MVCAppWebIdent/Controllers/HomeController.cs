@@ -6,28 +6,23 @@ using System.Diagnostics;
 
 namespace MVCAppWebIdent.Controllers
 {
-    public class CabinetController : Controller
+    public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public CabinetController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public HomeController(ILogger<HomeController> logger, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _logger = logger;
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
-        public IActionResult Userj()
-        {
-            return View();
-        }
+        public IActionResult Index() => View();
 
-        public IActionResult Adminj()
-        {
-            return View();
-        }
+        public IActionResult Home() => PartialView();
+        public IActionResult About() => PartialView();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

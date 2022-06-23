@@ -5,8 +5,8 @@
 
 @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
 {
-    <li class="nav-link">
-        <a asp-controller="Admin" asp-action="Index">
+    <li class="nav-link" data-url="/Admin/Roles/" style="cursor: pointer">
+        <a>
             <i class='bx bx-bug icon'></i>
             <span class="text nav-text">Admin Panel</span>
         </a>

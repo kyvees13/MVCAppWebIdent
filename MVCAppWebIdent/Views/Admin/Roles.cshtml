@@ -16,8 +16,10 @@
     <!-- Finder Block -->
     <div class="finder" style="display: inline-block">
         <select id="selector" asp-items=@ViewBag.select></select>
-        <br /><button id="btnSearch" type="submit" class="btn-light">Submit</button>
+        <button id="btnSearch" type="submit" class="btn-light">Submit</button>
     </div>
+
+    <br />
     <br />
 
     <div id="table"></div>
@@ -41,103 +43,35 @@
     
         <partial name="_PopUpDeleteRoleModelPartial", model="Model" />
     
-    </div> 
-
-</div> 
-
-
-
-@section Scripts{
-
-    <script>
-
-        $(document).ready(function () 
-        {
-            $("#btnSearch").click(function () 
-            {
-                $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
-                $('#clientsTable').DataTable(); 
-            });
-        });
-
-    </script> 
+    </div>
 
     <script>
 
         $(document).ready(function () {
 
-            $('#EditModal').on('show.bs.modal', function (event) 
+            $(document).on("click", "#btnSearch", function(event)
             {
-                var button = $(event.relatedTarget);
-                var recipient = button.data('internalid'); 
-                var modal = $(this);
-                
-                modal.find('.modal-title').text('Edit ' + recipient);
-
-                $.ajax(
-                    {
-                        type: 'GET',
-                        url: "@Url.Action("GetAccountByID", controller: "Admin")",
-                        data: { id: recipient },
-                        dataType: 'json',
-                        error: function () { console.log("not success"); },
-                        success: function (result) 
-                        {
-
-                            console.log("success got account! : ", result);
-
-                            modal.find('#currentEmail').val(result["email"]);
-                            modal.find('#currentPassword').val(result["password"]);
-
-                            $("#btnSaveProperties").one('click', function() 
-                            {
-                                console.log("button was clicked!")
-
-                                var model = { 
-                                    Id: recipient, 
-                                    Email: $("#currentEmail").val(), 
-                                    Password: $("#currentPassword").val() 
-                                };
-
-                                $.ajax(
-                                {
-                                    type: "POST",
-                                    url: "@Url.Action("SaveProperties", controller: "Admin")",
-                                    data: JSON.stringify(model),
-                                    dataType: 'json',
-                                    contentType: "application/json",
-                                    error: function () { console.log("not success"); },
-                                    success: function (result) 
-                                    {
-                                        console.log("success request! : ", result);
-                                        $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
-                                    }
-                                });
-                            })
-
-                        }
-                    });
-
+                console.log("search clicked!");
+                $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
+                $('#clientsTable').DataTable(); 
+                console.log("loaded!");
             });
-        })
 
-    </script>
 
-    <script>
-
-        $(document).ready(function () 
-        {
-            $('#DeleteModal').on('show.bs.modal', function (event) 
+            $(document).on("show.bs.modal", "#DeleteModal", function(event)
             {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var recipient = button.data('internalid'); // Extract info from data-* attributes
-                //console.log(recipient);  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+                console.log("Delete clicked!");
+
+                var button = $(event.relatedTarget);
+
+                var recipient = button.data('internalid');
                 var modal = $(this);
+
                 modal.find('.modal-title').text('Delete');
 
-                $("#ConfirmDeleteDialog").click(function() {
-
+                $("#ConfirmDeleteDialog").click(function() 
+                {
                     $.ajax(
                     {
                         type: "POST",
@@ -145,32 +79,20 @@
                         data: { id: recipient },
                         dataType: 'json',
                         error: function () { console.log("not success"); },
-                        success: function (result) 
-                        {
-                            $(".modal").on("hidden.bs.modal", function()
-                            {
-                                $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
-                            });
-                        }
+                        success: function (result) { $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() }); }
                     });
 
                 });
             });
-
-        });
-
-    </script>
-    
-    <script>
-
-        $(document).ready(function () 
-        {
-            $('#DetailsModal').on('show.bs.modal', function (event) 
+                
+            $(document).on("show.bs.modal", "#DetailsModal", function(event)
             {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                var recipient = button.data('internalid'); // Extract info from data-* attributes
-                //console.log(recipient);  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-                // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+
+                console.log("Details clicked!");
+
+                var button = $(event.relatedTarget);
+                var recipient = button.data('internalid');
+
                 var modal = $(this);
 
                 modal.find('.modal-title').text('Details : ' + recipient);
@@ -200,8 +122,67 @@
                     });
             });
 
-        });
+            $(document).on("show.bs.modal", "#EditModal", function(event)
+            {
 
-    </script> 
+                console.log("Edit clicked!");
+
+                var button = $(event.relatedTarget);
+                var recipient = button.data('internalid'); 
+                var modal = $(this);
+                
+                modal.find('.modal-title').text('Edit ' + recipient);
+
+                $.ajax(
+                    {
+                        type: 'GET',
+                        url: "@Url.Action("GetAccountByID", controller: "Admin")",
+                        data: { id: recipient },
+                        dataType: 'json',
+                        error: function () { console.log("not success"); },
+                        success: function (result) 
+                        {
+
+                            console.log("success got account! : ", result);
+
+                            modal.find('#currentEmail').val(result["email"]);
+                            modal.find('#currentPassword').val(result["password"]);
+
+                            $(document).one('click', "#btnSaveProperties", function()
+                            {
+
+                                console.log("button was clicked!")
+
+                                var model = { 
+                                    Id: recipient, 
+                                    Email: $("#currentEmail").val(), 
+                                    Password: $("#currentPassword").val() 
+                                };
+
+                                $.ajax(
+                                {
+                                    type: "POST",
+                                    url: "@Url.Action("SaveProperties", controller: "Admin")",
+                                    data: JSON.stringify(model),
+                                    dataType: 'json',
+                                    contentType: "application/json",
+                                    error: function () { console.log("not success"); },
+                                    success: function (result) 
+                                    {
+                                        console.log("success request! : ", result);
+                                        $("#table").load("/Admin/GetTablePartialView", { roleName: $("#selector").val() });
+                                    }
+                                });
+                            })
+                        }
+                    });
+            });
+        })
+
+    </script>
+
+</div>
+
+@section Scripts{
 
 }

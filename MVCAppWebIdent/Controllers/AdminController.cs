@@ -19,7 +19,10 @@ namespace MVCAppWebIdent.Controllers
         }
 
         [Authorize(Policy = "Admin")]
-        public IActionResult Index() => View();
+        public IActionResult Index() => PartialView("Index");
+
+        [Authorize(Policy = "Admin")]
+        public IActionResult _AdminNavigateBar() => PartialView("_AdminNavigateBar");
 
         [Authorize(Policy = "Admin")]
         public IActionResult GetPopUpEditModalPartialView() => PartialView("_PopupEditRoleModelPartial");

@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@{
+
+}
+
+<li class="nav-link">
+                        <a asp-controller="User" asp-action="Dashboard">
+                            <i class='bx bx-home-alt icon'></i>
+                            <span class="text nav-text">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a asp-controller="User" asp-action="Charts">
+                            <i class='bx bx-line-chart icon'></i>
+                            <span class="text nav-text">Charts</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a onclick=LoadPartialView() asp-controller="User" asp-action="Analytics">
+                            <i class='bx bx-pie-chart-alt icon' ></i>
+                            <span class="text nav-text">Analytics</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a asp-controller="User" asp-action="Wallets">
+                            <i class='bx bx-wallet icon' ></i>
+                            <span class="text nav-text">Wallets</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a asp-controller="User" asp-action="Settings">
+                            <i class='bx bx-cog icon' ></i>
+                            <span class="text nav-text">Settings</span>
+                        </a>
+                    </li>
+
+                    <partial name="_AdminPanelPartial" />

@@ -18,24 +18,24 @@ namespace MVCAppWebIdent.Controllers
         }
 
         [Authorize(Policy="User")]
-        public IActionResult Index() => View();
+        public IActionResult Index() => PartialView("Dashboard");
 
         [Authorize(Policy = "User")]
-        public IActionResult Dashboard() => View();
+        public IActionResult Dashboard() => PartialView("Dashboard");
 
         [Authorize(Policy = "User")]
-        public IActionResult Charts() => View();
+        public IActionResult Charts() => PartialView("Charts");
 
         [Authorize(Policy = "User")]
-        public IActionResult Analytics() => View();
+        public IActionResult Analytics() => PartialView("Analytics");
 
         [Authorize(Policy = "User")]
-        public IActionResult Wallets() => View();
+        public IActionResult Wallets() => PartialView("Wallets");
 
         [Authorize(Policy = "User")]
-        public IActionResult Settings() => View();
+        public IActionResult Settings() => PartialView("Settings");
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });

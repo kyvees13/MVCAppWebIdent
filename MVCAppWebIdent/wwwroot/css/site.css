@@ -11,6 +11,8 @@
 .contain {
     margin-left: 50px;
     margin-top: 20px;
+    margin-right: 50px;
+    margin-bottom: 30px;
     height: 95vh;
 }
 .contain .headertext {
@@ -20,6 +22,11 @@
 .contain .maintext {
     margin-top: 10px;
     font-size: 30px;
+}
+
+.content .custombutton:hover{
+    color: black;
+    background-color: #E4E9F7;
 }
 
 :root {
@@ -81,6 +88,7 @@ body.dark {
         display: flex;
         align-items: center;
         margin-top: 10px;
+        cursor: pointer;
     }
 
     .sidebar header .image,
@@ -218,6 +226,14 @@ body.dark .sidebar header .toggle {
     transition: var(--tran-03);
 }
 
+.submitevent:hover {
+    background-color: var(--primary-color);
+    transition: var(--tran-03);
+    display: flex;
+    align-items: center;
+    border-radius: 6px;
+}
+
     .sidebar li a:hover {
         background-color: var(--primary-color);
     }
@@ -344,4 +360,20 @@ ul {
 
 .nav-link {
     padding: 0;
+}
+
+.grid-container {
+    display: grid;
+    gap: 50px 50px;
+    grid-template-columns: auto auto auto;
+    background-color: #2196F3;
+    padding: 10px;
+}
+
+.grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
 }

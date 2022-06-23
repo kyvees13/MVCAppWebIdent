@@ -2,5 +2,20 @@
     ViewData["Title"] = "Home Page";
 }
 
-<h1>Financial Market</h1>
-<a asp-controller="User" asp-action="Dashboard">Get Started!</a>
+<script>
+
+    $(document).ready(function() 
+            {
+                console.log("ready")
+                $("content").load("/Home/Main/");
+
+                $(document).on("click", ".custombutton", function() 
+                {
+                    console.log("click!");
+        
+                    var model = $(this);
+                    $(".content").load(model.data("url"));
+                });
+            });
+
+</script>

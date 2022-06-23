@@ -2,40 +2,80 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="contain">
+<style>
+    .grid-container {
+      display: grid;
+      gap: 25px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      background-color: #2196F3;
+    }
+
+    .grid-item {
+      background-color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(0, 0, 0, 0.8);
+      text-align: center;
+    }
+</style>
+
+<div class="contain" style="margin-right: 80px">
 
     <h1 class="headertext">@ViewData["Title"]</h1>
-    <p class="maintext">sadasdas</p>
 
-    <br />
-
-    <div id="bar"></div>
+    <div class="grid-container" id="charts">
+        <div class="grid-item"><canvas id="bar"></canvas></div>
+        <div class="grid-item"><canvas id="line"></canvas></div>
+        <div class="grid-item"><canvas id="scatter"></canvas></div>
+        <div class="grid-item"><canvas id="pie"></canvas></div>
+    </div>
 
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js"></script>
 <script type ="text/javascript">
 
-    var chart = document.getElementById('bar').getContext('2d');
-    var mychart = new Chart(chart, {
-        type: 'bar', 
-        data:{
-            labels : ['001', '002', '003'],
+        var scatter = new Chart(document.getElementById("scatter"), {
+          type: 'scatter',
+          data: [{
+                x: 10,
+                y: 20
+            }, {
+                x: 15,
+                y: 10
+            }],
+          options: {
+            scales: {
+              x: {
+                type: 'linear',
+                position: 'bottom'
+              }
+            }
+          }
+        });
+        
+    var line = new Chart(document.getElementById("line"), {
+          type: "line",
+          data: { labels: ['January', 'February', 'March', 'April', 'May', 'June',],
             datasets: [
                 {
-                    label : 'Bar Chart', 
-                    data: [100, 200, 300], 
-                    backgroundcolor : 'rgba(6,128,250)'
+                  label: 'My First dataset',
+                  backgroundColor: 'rgb(255, 99, 132)',
+                  borderColor: 'rgb(255, 99, 132)',
+                  data: [0, 10, 5, 2, 20, 30, 45],
                 }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
+          },
+          options: {}
         });
+
+    var bar = new Chart(document.getElementById("bar"), {
+          type: "bar",
+          data: {},
+          options: {}
+        });
+
+    var pie = new Chart(document.getElementById("pie"), {
+          type: "pie",
+          data: {},
+          options: {}
+        });
+
 </script>
