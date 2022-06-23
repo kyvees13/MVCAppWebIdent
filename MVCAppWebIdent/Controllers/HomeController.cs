@@ -21,8 +21,8 @@ namespace MVCAppWebIdent.Controllers
 
         public IActionResult Index() => View();
 
-        public IActionResult Home() => PartialView();
-        public IActionResult About() => PartialView();
+        public IActionResult Home() => View();
+        public IActionResult About() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

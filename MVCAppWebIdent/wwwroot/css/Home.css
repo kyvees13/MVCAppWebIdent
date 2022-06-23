@@ -36,6 +36,23 @@ nav {
     text-align: center;
 }
 
+.content button {
+    text-decoration: none;
+    display: inline-block;
+    color: #fff;
+    font-size: 24px;
+    border: 2px solid #fff;
+    padding: 14px 70px;
+    border-radius: 50px;
+    margin-top: 20px;
+    background-color: transparent;
+}
+.content button:hover {
+    color: black;
+    background-color: #E4E9F7;
+    cursor:pointer;
+}
+
     .content .custombutton {
         transition: 0.3s;
     }

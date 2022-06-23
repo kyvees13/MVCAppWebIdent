@@ -19,6 +19,11 @@
         <button id="btnSearch" type="submit" class="btn-light">Submit</button>
     </div>
 
+    <div>
+        <label>Введите новую роль: </label><input id="setRoleInput"  />
+        <button id="btnRoleSubmit"></button>
+    </div>
+
     <br />
     <br />
 
@@ -45,9 +50,25 @@
     
     </div>
 
-    <script>
+</div>
+
+<script>
 
         $(document).ready(function () {
+
+            $("#btnRoleSubmit").click(function() {
+
+                $.ajax(
+                    {
+                        type: "POST",
+                        url: "@Url.Action("SetNewRole", controller: "Admin")",
+                        data: { roleName: "#setRoleInput".val() },
+                        dataType: 'json',
+                        error: function () { console.log("not success"); },
+                        success: function (result) { }
+                    });
+
+            });
 
             $(document).on("click", "#btnSearch", function(event)
             {
@@ -70,7 +91,7 @@
 
                 modal.find('.modal-title').text('Delete');
 
-                $("#ConfirmDeleteDialog").click(function() 
+                $(document).one('click', "#ConfirmDeleteDialog", function()
                 {
                     $.ajax(
                     {
@@ -109,22 +130,20 @@
 
                             console.log("success got account! : ", result);
 
-                            modal.find('label#IdContent').text(result["id"]);
-                            modal.find('label#EmailContent').text(result["email"]);
-                            modal.find('label#PhonenumberContent').text(result["phonenumber"]);
-                            modal.find('label#PasswordContent').text(result["password"]);
+                            modal.find('span#IdContent').text(result["id"]);
+                            modal.find('span#UsernameContent').text(result["username"]);
+                            modal.find('span#EmailContent').text(result["email"]);
+                            modal.find('span#EmailConfirmedContent').text(result["emailConfirmed"]);
+                            modal.find('span#PhonenumberContent').text(result["phonenumber"]);
+                            modal.find('span#PhonenumberConfirmedContent').text(result["phonenumberConfirmed"]);
 
                             console.log("loaded labels!");
-
-                            
-
                         }
                     });
             });
 
             $(document).on("show.bs.modal", "#EditModal", function(event)
             {
-
                 console.log("Edit clicked!");
 
                 var button = $(event.relatedTarget);
@@ -136,27 +155,28 @@
                 $.ajax(
                     {
                         type: 'GET',
-                        url: "@Url.Action("GetAccountByID", controller: "Admin")",
+                        url: "@Url.Action("GetAccountByID", "Admin")",
                         data: { id: recipient },
                         dataType: 'json',
                         error: function () { console.log("not success"); },
                         success: function (result) 
                         {
-
                             console.log("success got account! : ", result);
 
+                            modal.find('#currentUsername').val(result["username"]);
                             modal.find('#currentEmail').val(result["email"]);
-                            modal.find('#currentPassword').val(result["password"]);
+                            modal.find('#currentEmailConfirmed').val(result["emailconfirmed"]);
+                            modal.find('#currentPhonenumber').val(result["phonenumber"]);
+                            modal.find('#currentPhonenumberConfirmed').val(result["phonenumberconfirmed"]);
 
                             $(document).one('click', "#btnSaveProperties", function()
                             {
-
                                 console.log("button was clicked!")
 
                                 var model = { 
                                     Id: recipient, 
                                     Email: $("#currentEmail").val(), 
-                                    Password: $("#currentPassword").val() 
+                                    Phonenumber: $("#currePhonenumber").val(), 
                                 };
 
                                 $.ajax(
@@ -180,8 +200,6 @@
         })
 
     </script>
-
-</div>
 
 @section Scripts{
 

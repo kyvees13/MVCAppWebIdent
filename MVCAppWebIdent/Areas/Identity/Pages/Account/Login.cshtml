@@ -11,7 +11,7 @@
         <section>
             <form id="account" method="post">
                 <h2>Use your account to log in.</h2>
-                <hr />
+                <br />
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-floating">
                     <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" />
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div>
-                    <a id="submitlogin" class="custombutton" style="cursor: pointer">Enter</a>
+                    <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary custombutton">Enter</button>
                 </div>
                 <div>
                     <p>
@@ -49,16 +49,5 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-
-    <script language="javascript" type="text/javascript">
-
-        var form = document.getElementById("account");
-        document.getElementById("submitlogin").addEventListener("click", function () 
-        { 
-            form.submit(); 
-        }
-        );
-
-    </script>
     
 }

@@ -12,23 +12,30 @@
                 <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+
               <div class="modal-body">
 
-                <form>
+                  <div class="form-group">
+                    <label>Username: </label>
+                    <input type="text" class="form-control" id="currentUsername" aria-describedby="emailHelp" placeholder="Enter username">
+                  </div>
 
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
+                    <label>Email address: </label>
                     <input type="email" class="form-control" id="currentEmail" aria-describedby="emailHelp" placeholder="Enter email">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="text" class="form-control" id="currentPassword" placeholder="Password">
                   </div>
 
-                </form>
+                  <div class="form-group">
+                    <label>Phone number: </label>
+                    <input type="text" class="form-control" id="currentPhonenumber" placeholder="Enter phone number">
+                  </div>
+
+                  <div class="form-group">
+                    <label>Set new role: </label>
+                  </div>
 
               </div>
+
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 <button id="btnSaveProperties" type="button" class="btn btn-primary" data-bs-dismiss="modal">Save changes</button>

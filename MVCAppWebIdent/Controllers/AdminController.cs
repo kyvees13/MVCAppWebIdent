@@ -30,6 +30,31 @@ namespace MVCAppWebIdent.Controllers
         [Authorize(Policy = "Admin")]
         public IActionResult GetPopUpDeleteModalPartialView() => PartialView("_PopupDeleteRoleModelPartial");
 
+        [Authorize(Policy ="Admin")]
+        [HttpPost]
+        public JsonResult SetNewRole(string roleName)
+        {
+            var role = _roleManager.FindByNameAsync(roleName);
+
+            if (role == null)
+            {
+                var result = _roleManager.CreateAsync(new IdentityRole(roleName));
+                
+                if (result.Result.Succeeded)
+                {
+                    return Json(new { Success = "True", Message = "Role was created" });
+                }
+                else
+                {
+                    return Json(new { Success = "False", Message = "Role was not created" });
+                }
+            }
+            else
+            {
+                return Json(new { Success = "False", Message = "Role is exist" });
+            }
+        }
+
         [Authorize(Policy = "Admin")]
         [HttpGet]
         public JsonResult GetAccountByID(string id)
@@ -44,10 +69,17 @@ namespace MVCAppWebIdent.Controllers
             return Json(new EditModel 
             { 
                 Id = id, 
+
+                Username = currentUser.UserName,
+
                 Email = currentUser.Email, 
-                Password = currentUser.PasswordHash, 
-                Phonenumber=currentUser.PhoneNumber 
-            });
+                EmailConfirmed = currentUser.EmailConfirmed,
+
+                Phonenumber = currentUser.PhoneNumber,
+                PhonenumberConfirmed = currentUser.PhoneNumberConfirmed,
+
+                Password = currentUser.PasswordHash
+            });;
         }
 
         [Authorize(Policy = "Admin")]
@@ -87,12 +119,11 @@ namespace MVCAppWebIdent.Controllers
                 return Json(new { Success = "False", Message = "User not found" });
             }
 
-            var resp1 = _userManager.RemoveFromRolesAsync(
-                user: user, roles: _userManager.GetRolesAsync(user).Result.Cast<string>());
+            var removerolesResponse = _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(user).Result.Cast<string>());
 
-            var resp = _userManager.DeleteAsync(user);
+            var deleteuserResponse = _userManager.DeleteAsync(user);
 
-            if (resp.Result.Succeeded)
+            if (deleteuserResponse.Result.Succeeded)
             {
                 return Json(new
                 {
@@ -100,12 +131,12 @@ namespace MVCAppWebIdent.Controllers
                     Message = "Success deleted"
                 });
             }
-            else if (resp.Result.Errors.Count() > 0)
+            else if (deleteuserResponse.Result.Errors.Count() > 0)
             {
                 return Json(new
                 {
                     Success = "False",
-                    Message = JsonSerializer.Serialize(resp.Result.Errors.ToList())
+                    Message = JsonSerializer.Serialize(deleteuserResponse.Result.Errors.ToList())
                 });
             }
 

@@ -22,35 +22,13 @@
 
     <h1 class="headertext">@ViewData["Title"]</h1>
 
-    <div class="grid-container" id="charts">
-        <div class="grid-item"><canvas id="bar"></canvas></div>
-        <div class="grid-item"><canvas id="line"></canvas></div>
-        <div class="grid-item"><canvas id="scatter"></canvas></div>
-        <div class="grid-item"><canvas id="pie"></canvas></div>
+    <div id="chartline">
+        <canvas id="line"></canvas>
     </div>
 
 </div>
 
 <script type ="text/javascript">
-
-        var scatter = new Chart(document.getElementById("scatter"), {
-          type: 'scatter',
-          data: [{
-                x: 10,
-                y: 20
-            }, {
-                x: 15,
-                y: 10
-            }],
-          options: {
-            scales: {
-              x: {
-                type: 'linear',
-                position: 'bottom'
-              }
-            }
-          }
-        });
         
     var line = new Chart(document.getElementById("line"), {
           type: "line",
@@ -66,16 +44,5 @@
           options: {}
         });
 
-    var bar = new Chart(document.getElementById("bar"), {
-          type: "bar",
-          data: {},
-          options: {}
-        });
-
-    var pie = new Chart(document.getElementById("pie"), {
-          type: "pie",
-          data: {},
-          options: {}
-        });
 
 </script>
